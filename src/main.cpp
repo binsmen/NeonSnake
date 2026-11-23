@@ -1,6 +1,26 @@
 //Part-A
 #include "raylib.h"
 #include "resource_dir.h"	
+#include <vector>
+
+using namespace std;
+
+struct Position {
+	int x;
+	int y;
+};
+
+
+
+
+/*
+
+Building the phase-3 --> movement manipulation
+
+using enum and switch --> getting the current direction 
+
+
+*/
 
 int main ()
 {
@@ -12,6 +32,11 @@ int main ()
 	
 	SearchAndSetResourceDir("resources");
 	SetTargetFPS(60);
+
+	vector<Position> pos;
+	pos.push_back({20,15});
+	pos.push_back({19,15});
+	pos.push_back({18,15});
 
 	//Part-C
 	while (!WindowShouldClose())		
@@ -25,7 +50,9 @@ int main ()
 
 		int cellSize = 20;
 
-		// Horizontal lines
+		//Handling the snake body position dynamically --> Best way to manipulate the game
+
+ 		// Horizontal lines
 		for (int i = 0; i <= (29+1); i++)
 		{
 			DrawLine(
@@ -44,6 +71,25 @@ int main ()
 				{57, 255, 136, 100}
 			);
 		}
+
+		//Creating the snake's body using Drawrectangle
+		int n=pos.size();
+		for(int i=0; i<n; i++){
+			DrawRectangle(
+				pos[i].x*cellSize,
+				pos[i].y*cellSize,
+				cellSize,
+				cellSize,
+				i==0 ? GREEN : DARKGREEN
+			);
+		}
+
+		//Change the position in this movement -> 1 per iteration
+		for(int i=n-1; i>0; i--){
+			pos[i]=pos[i-1];
+		}
+		pos[0].x++;
+		
 
 		EndDrawing();
 	}
